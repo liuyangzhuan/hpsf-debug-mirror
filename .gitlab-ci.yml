@@ -8,6 +8,7 @@ debug:hpsf:
   stage: build
   tags: 
     - hpsf
+    - gpu
   script:
     - echo "=== OS Info ==="
     - cat /etc/os-release
