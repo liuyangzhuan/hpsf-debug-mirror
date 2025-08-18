@@ -8,8 +8,6 @@ debug:hpsf:
   stage: build
   tags: 
     - hpsf
-    - hpsf-x86_64
-    - nvidia-gh200
   script:
     - echo "=== OS Info ==="
     - cat /etc/os-release
