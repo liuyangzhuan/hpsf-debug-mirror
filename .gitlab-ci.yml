@@ -6,7 +6,8 @@ stages:
 # -------------------------
 debug:hpsf:
   stage: build
-  tags: hpsf
+  tags: 
+    - hpsf
   script:
     - echo "=== OS Info ==="
     - cat /etc/os-release
