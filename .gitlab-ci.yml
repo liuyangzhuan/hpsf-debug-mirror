@@ -7,7 +7,7 @@ stages:
 debug:hpsf:
   stage: build
   tags: 
-    - hpsf
+    - nvidia-gh200
   script:
     - echo "=== OS Info ==="
     - cat /etc/os-release
@@ -43,19 +43,20 @@ debug:hpsf:
     - echo
     - echo "=== All Installed Packages (RHEL/Fedora-based) ==="
     - if command -v rpm >/dev/null; then rpm -qa; fi
+    - nvidia-smi
 
-# -------------------------
-# Include gh-gl-sync component for mirroring
-# -------------------------
-include:
-  - component: $CI_SERVER_FQDN/dav-sdk/gh-gl-sync/github-sync@~latest
-    inputs:
-      github_project: liuyangzhuan/hpsf-debug-mirror
-      gitlab_repo: git@ssh.gitlab.spack.io:SSG/hpsf-debug-mirror-target.git
-      gitlab_host: https://gitlab.spack.io/
-      gitlab_project: SSG/hpsf-debug-mirror-target
-      prereq_check: format
-      status_context: "Debug CI"
-      sync_draft_prs: true
-    rules:
-      - if: $CI_SERVER_HOST == "gitlab.spack.io"
+# # -------------------------
+# # Include gh-gl-sync component for mirroring
+# # -------------------------
+# include:
+#   - component: $CI_SERVER_FQDN/dav-sdk/gh-gl-sync/github-sync@~latest
+#     inputs:
+#       github_project: liuyangzhuan/hpsf-debug-mirror
+#       gitlab_repo: git@ssh.gitlab.spack.io:SSG/hpsf-debug-mirror-target.git
+#       gitlab_host: https://gitlab.spack.io/
+#       gitlab_project: SSG/hpsf-debug-mirror-target
+#       prereq_check: format
+#       status_context: "Debug CI"
+#       sync_draft_prs: true
+#     rules:
+#       - if: $CI_SERVER_HOST == "gitlab.spack.io"
