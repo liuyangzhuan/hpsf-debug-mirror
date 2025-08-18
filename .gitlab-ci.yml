@@ -8,44 +8,14 @@ debug:hpsf:
   stage: build
   tags: 
     - hpsf
-    - gpu
   script:
     - echo "=== OS Info ==="
     - cat /etc/os-release
     - uname -a
-    - echo
-    - echo "=== Compiler Versions ==="
-    - gcc --version || echo "gcc not found"
-    - g++ --version || echo "g++ not found"
-    - gfortran --version || echo "gfortran not found"
-    - echo
-    - echo "=== MPI Versions ==="
-    - mpicc --version || echo "mpicc not found"
-    - mpicxx --version || echo "mpicxx not found"
-    - mpif90 --version || echo "mpif90 not found"
-    - echo
-    - echo "=== CMake Version ==="
-    - cmake --version || echo "cmake not found"
-    - echo
-    - echo "=== BLAS/LAPACK/ScaLAPACK Libraries ==="
-    - ldconfig -p | grep -i blas || true
-    - ldconfig -p | grep -i lapack || true
-    - ldconfig -p | grep -i scalapack || true
-    - echo
-    - echo "=== Python Version ==="
-    - python3 --version || echo "python3 not found"
-    - pip3 --version || echo "pip3 not found"
-    - echo
-    - echo "=== Environment Modules (if available) ==="
-    - module avail 2>/dev/null || echo "No module system found"
-    - echo
-    - echo "=== All Installed Packages (Debian/Ubuntu-based) ==="
-    - if command -v dpkg >/dev/null; then dpkg -l; fi
-    - echo
-    - echo "=== All Installed Packages (RHEL/Fedora-based) ==="
-    - if command -v rpm >/dev/null; then rpm -qa; fi
-    - nvidia-smi
-
+    - module list
+    - module load e4s
+    - module load cuda
+    - module load cmake 
 # # -------------------------
 # # Include gh-gl-sync component for mirroring
 # # -------------------------
