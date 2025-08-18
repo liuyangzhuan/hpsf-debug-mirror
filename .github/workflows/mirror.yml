@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    with:
+      fetch-depth: 0  # Fetch all history for all branches and tags
     - name: Mirror and trigger CI job at https://gitlab.spack.io
       uses: stenongithub/gitlab-mirror-and-ci-action@0.2.8
       with:
