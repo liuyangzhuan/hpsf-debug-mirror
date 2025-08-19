@@ -1,4 +1,4 @@
-image: liuyangzhuan/superlu_gpu:v1.1
+image: liuyangzhuan/superlu_gpu_arm64:v1.0
 stages:
   - build
 
@@ -8,7 +8,8 @@ stages:
 debug:hpsf:
   stage: build
   tags: 
-    - hpsf
+    # - hpsf
+    - x86_64-nvidiagpu
   script:
     - cd ~/superlu_dist
     - bash runit.sh
