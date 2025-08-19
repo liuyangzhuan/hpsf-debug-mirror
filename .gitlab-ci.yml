@@ -1,74 +1,70 @@
-# stages:
-#   - build
-
-# # -------------------------
-# # Debug job to inspect hpsf image
-# # -------------------------
-# debug:hpsf:
-#   stage: build
-#   tags: 
-#     - hpsf
-#   script:
-#     - echo "=== OS Info ==="
-#     - cat /etc/os-release
-#     - uname -a
-#     - module list
-#     - module load e4s
-#     - module load cuda
-#     - module load cmake 
-
-
-
-debug:hpsf:
-  tags: 
-    - hpsf
-  before_script:
-    - echo "deb http://http.us.debian.org/debian stable main contrib non-free" >> /etc/apt/sources.list
-    - apt update
-    - apt-get -y install gcc-11 g++-11 gfortran-11
-    - update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 60 --slave /usr/bin/g++ g++ /usr/bin/g++-11
-    - update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 60
-    - apt-get -y install openmpi-bin libopenmpi-dev libblas-dev liblapack-dev libscalapack-mpi-dev cmake
-
+image: liuyangzhuan/superlu_gpu:v1.1
 stages:
   - build
-  - test
 
-build:
+# -------------------------
+# Debug job to inspect hpsf image
+# -------------------------
+debug:hpsf:
   stage: build
-
+  tags: 
+    - hpsf
   script:
-    - export BLAS_LIB=/usr/lib/x86_64-linux-gnu/libblas.so
-    - export LAPACK_LIB=/usr/lib/x86_64-linux-gnu/liblapack.so
-    - export SCALAPACK_LIB="/usr/lib/x86_64-linux-gnu/libscalapack-openmpi.so"
-    - printf "${BLUE} YL; Installing ButterflyPACK from source\n"
-    - pwd
-    - rm -rf build && mkdir -p build && cd build
-    - cmake .. -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_COMPILER=mpicc -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_Fortran_COMPILER=mpif90 -DCMAKE_INSTALL_PREFIX=. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF -DTPL_BLAS_LIBRARIES="$BLAS_LIB" -DTPL_LAPACK_LIBRARIES="$LAPACK_LIB" -DTPL_SCALAPACK_LIBRARIES="$SCALAPACK_LIB"
-    - make && make install
-    - cd ../
-    - printf "${BLUE} YL; Done installing ButterflyPACK from source\n"
-
-  artifacts:
-    paths:
-      - build
-    expire_in: 1 week
+    - cd ~/superlu_dist
+    - bash runit.sh
 
 
 
+# debug:hpsf:
+#   tags: 
+#     - hpsf
+#   before_script:
+#     - echo "deb http://http.us.debian.org/debian stable main contrib non-free" >> /etc/apt/sources.list
+#     - apt update
+#     - apt-get -y install gcc-11 g++-11 gfortran-11
+#     - update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 60 --slave /usr/bin/g++ g++ /usr/bin/g++-11
+#     - update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 60
+#     - apt-get -y install openmpi-bin libopenmpi-dev libblas-dev liblapack-dev libscalapack-mpi-dev cmake
 
-# # -------------------------
-# # Include gh-gl-sync component for mirroring
-# # -------------------------
-# include:
-#   - component: $CI_SERVER_FQDN/dav-sdk/gh-gl-sync/github-sync@~latest
-#     inputs:
-#       github_project: liuyangzhuan/hpsf-debug-mirror
-#       gitlab_repo: git@ssh.gitlab.spack.io:SSG/hpsf-debug-mirror-target.git
-#       gitlab_host: https://gitlab.spack.io/
-#       gitlab_project: SSG/hpsf-debug-mirror-target
-#       prereq_check: format
-#       status_context: "Debug CI"
-#       sync_draft_prs: true
-#     rules:
-#       - if: $CI_SERVER_HOST == "gitlab.spack.io"
+# stages:
+#   - build
+#   - test
+
+# build:
+#   stage: build
+
+#   script:
+#     - export BLAS_LIB=/usr/lib/x86_64-linux-gnu/libblas.so
+#     - export LAPACK_LIB=/usr/lib/x86_64-linux-gnu/liblapack.so
+#     - export SCALAPACK_LIB="/usr/lib/x86_64-linux-gnu/libscalapack-openmpi.so"
+#     - printf "${BLUE} YL; Installing ButterflyPACK from source\n"
+#     - pwd
+#     - rm -rf build && mkdir -p build && cd build
+#     - cmake .. -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_COMPILER=mpicc -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_Fortran_COMPILER=mpif90 -DCMAKE_INSTALL_PREFIX=. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF -DTPL_BLAS_LIBRARIES="$BLAS_LIB" -DTPL_LAPACK_LIBRARIES="$LAPACK_LIB" -DTPL_SCALAPACK_LIBRARIES="$SCALAPACK_LIB"
+#     - make && make install
+#     - cd ../
+#     - printf "${BLUE} YL; Done installing ButterflyPACK from source\n"
+
+#   artifacts:
+#     paths:
+#       - build
+#     expire_in: 1 week
+
+
+
+
+# # # -------------------------
+# # # Include gh-gl-sync component for mirroring
+# # # -------------------------
+# # include:
+# #   - component: $CI_SERVER_FQDN/dav-sdk/gh-gl-sync/github-sync@~latest
+# #     inputs:
+# #       github_project: liuyangzhuan/hpsf-debug-mirror
+# #       gitlab_repo: git@ssh.gitlab.spack.io:SSG/hpsf-debug-mirror-target.git
+# #       gitlab_host: https://gitlab.spack.io/
+# #       gitlab_project: SSG/hpsf-debug-mirror-target
+# #       prereq_check: format
+# #       status_context: "Debug CI"
+# #       sync_draft_prs: true
+# #     rules:
+# #       - if: $CI_SERVER_HOST == "gitlab.spack.io"
