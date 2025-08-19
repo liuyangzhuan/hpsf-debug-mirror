@@ -1,7 +1,23 @@
+# image: liuyangzhuan/superlu_gpu_amd64:v1.2
+# stages:
+#   - build
+
+# # -------------------------
+# # Debug job to inspect hpsf image
+# # -------------------------
+# debug:hpsf:
+#   stage: build
+#   tags: 
+#     # - hpsf
+#     - x86_64-nvidiagpu
+#   script:
+#     - cd ~/superlu_dist
+#     - bash runit.sh
+
+
+
+
 image: liuyangzhuan/superlu_gpu_amd64:v1.2
-tags: 
-  # - hpsf
-  - x86_64-nvidiagpu
 
 stages:
   - build
@@ -9,7 +25,9 @@ stages:
 
 build:
   stage: build
-
+  tags: 
+    # - hpsf
+    - x86_64-nvidiagpu
   script:
     - cd ~/superlu_dist
 
@@ -41,3 +59,4 @@ test 4/4:
   script:
     - export TEST_NUMBER=4
     - sh runit.sh
+
