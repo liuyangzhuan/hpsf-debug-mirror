@@ -32,7 +32,7 @@ build:
     - git pull
     - cd build
     - make install -j
-    - cd ~
+    - cd ..
     - cp -r build $CI_PROJECT_DIR/build_artifact
 
   artifacts:
