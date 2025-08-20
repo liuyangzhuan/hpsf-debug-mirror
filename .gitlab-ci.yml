@@ -25,9 +25,7 @@ stages:
 
 build:
   stage: build
-  tags: 
-    # - hpsf
-    - x86_64-nvidiagpu
+  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
   script:
     - cd ~/superlu_dist
 
@@ -38,24 +36,28 @@ build:
 
 test 1/4:
   stage: test
+  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
   script:
     - export TEST_NUMBER=1
     - sh runit.sh
 
 test 2/4:
   stage: test
+  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
   script:
     - export TEST_NUMBER=2
     - sh runit.sh
 
 test 3/4:
   stage: test
+  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
   script:
     - export TEST_NUMBER=3
     - sh runit.sh
 
 test 4/4:
   stage: test
+  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
   script:
     - export TEST_NUMBER=4
     - sh runit.sh
