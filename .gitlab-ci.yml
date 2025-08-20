@@ -19,46 +19,60 @@
 
 image: liuyangzhuan/superlu_gpu_amd64:v1.2
 
-stages:
-  - build
-  - test
+stages: [build, test]
+
+default:
+  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
+
 
 build:
   stage: build
-  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
   script:
-    - cd ~/superlu_dist
+    - cd ~/superlu_dist/superlu_dist
+    - git pull
+    - cd build
+    - make install -j
+    - cd ~
+    - cp -r build $CI_PROJECT_DIR/build_artifact
 
   artifacts:
     paths:
-      - build
+      - build_artifact
     expire_in: 1 week
 
 test 1/4:
   stage: test
-  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
+  needs: [build]
   script:
+    - cd ~/superlu_dist
+    - cp -r $CI_PROJECT_DIR/build_artifact/* superlu_dist/build/. 
     - export TEST_NUMBER=1
     - sh runit.sh
 
 test 2/4:
   stage: test
-  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
+  needs: [build]
   script:
+    - cd ~/superlu_dist
+    - cp -r $CI_PROJECT_DIR/build_artifact/* superlu_dist/build/.   
     - export TEST_NUMBER=2
     - sh runit.sh
 
 test 3/4:
   stage: test
-  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
+  needs: [build]
   script:
+    - cd ~/superlu_dist
+    - cp -r $CI_PROJECT_DIR/build_artifact/* superlu_dist/build/.   
     - export TEST_NUMBER=3
     - sh runit.sh
 
 test 4/4:
   stage: test
-  tags: [hpsf-gpu, x86_64-nvidiagpu, nvidia-a100]
+  needs: [build]
   script:
+    - cd ~/superlu_dist
+    - cp -r $CI_PROJECT_DIR/build_artifact/* superlu_dist/build/.   
     - export TEST_NUMBER=4
     - sh runit.sh
 
