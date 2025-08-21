@@ -8,11 +8,11 @@ jobs:
     - name: Mirror and trigger CI job at https://gitlab.spack.io
       uses: stenongithub/gitlab-mirror-and-ci-action@0.2.8
       with:
-        args: "https://gitlab.spack.io/SSG/hpsf-debug-mirror-target.git"
+        args: "https://gitlab.spack.io/ssg/hpsf-debug-mirror-target.git"
       env:
         GITLAB_HOSTNAME: "gitlab.spack.io"
         GITLAB_USERNAME: "liuyang"
         GITLAB_PASSWORD: ${{ secrets.GITLAB_PASSWORD }}
-        GITLAB_PROJECT_ID: "SSG/hpsf-debug-mirror-target"
+        GITLAB_PROJECT_ID: "68"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         POLL_TIMEOUT: "800"
